@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Discord Bot Project</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        h1, h2, h3 { color: #FFF; }
-        code { background-color: #f9f9f9; padding: 2px 4px; }
-    </style>
-</head>
 <body>
-    <h1>Discord Bot Project</h1>
+    <h1>FiveFour Discord Bot</h1>
     <h2>Table of Contents</h2>
     <ul>
         <li><a href="#summary">Summary</a></li>
