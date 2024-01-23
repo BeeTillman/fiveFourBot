@@ -72,6 +72,13 @@ If you want to use prefix commands, make sure to also enable the intent below in
 
 # Setup both of the loggers
 
+client = discord.Client(intents=intents)
+tree = discord.app_commands.CommandTree(client)
+@client.event
+async def on_ready():
+    await tree.sync(guild=discord.Object(id=1199177016134611045))
+    # print "ready" in the console when the bot is ready to work
+    print("ready")
 
 class LoggingFormatter(logging.Formatter):
     # Colors

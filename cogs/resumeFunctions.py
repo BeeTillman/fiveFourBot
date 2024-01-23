@@ -17,7 +17,6 @@ class ResumeFunctions(commands.Cog, name="resumeFunctions"):
         name="startpicker",
         description="Starts a random user picker.",
     )
-    @app_commands.guilds(discord.Object(id=882708596437534996))
     async def start_picker(
             self, context: Context
     ) -> None:
