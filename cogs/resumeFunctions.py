@@ -24,21 +24,27 @@ class ResumeFunctions(commands.Cog, name="resumeFunctions"):
             self, context: Context, *, countdown: int
     ) -> None:
         global users
-        # Initialize the embed
-        embed = discord.Embed(title="FiveFour Randomizer Bot", description="React to this Message to Enter the drawing!", color=0xBEBEFE)
+        thumbnail = discord.File("images/gift-box.png", filename="thumbnail.png")
+        # NOTE: Initialize the embed
+        embed = discord.Embed(
+            title="FiveFour Randomizer Bot",
+            description="React to this Message to Enter the drawing!",
+            color=0xBEBEFE
+        )
         embed.set_footer(text="Drawing Ends in: " + str(countdown) + "s", icon_url=None)
         embed.add_field(name="Entries:", value="0", inline=True)
         embed.add_field(name="Users:", value="None", inline=False)
-        msg = await context.send(embed=embed)
-        # Add the reaction to the message
-        await msg.add_reaction("✅")
+        embed.set_thumbnail(url="attachment://thumbnail.png")
+        msg = await context.send(embed=embed, files=[thumbnail])
+        # NOTE: Add the reaction to the message
+        await msg.add_reaction("🙋")
         time.sleep(1)
-        # Start the countdown and update the embed
+        # NOTE: Start the countdown and update the embed
         while countdown:
             msg = await context.fetch_message(msg.id)
-            reaction = get(msg.reactions, emoji="✅")
+            reaction = get(msg.reactions, emoji="🙋")
             users = set()
-            # Get all the users that reacted to the message and display the number of them and their names
+            # NOTE: Get all the users that reacted to the message and display the number of them and their names
             async for user in reaction.users():
                 if user != self.bot.user:
                     users.add(user)
@@ -49,15 +55,20 @@ class ResumeFunctions(commands.Cog, name="resumeFunctions"):
             await msg.edit(embed=embed)
             countdown -= 1
             time.sleep(1)
-        # End the drawing and pick a winner
+        # NOTE: End the drawing and pick a winner
         embed.description = "Drawing Ended!"
-        winner = random.choice(list(users))
-        embed.add_field(name="Winner: ", value=winner.name, inline=True)
-        embed.set_footer(text="Drawing Ended!", icon_url=None)
-        await msg.edit(embed=embed)
-        await msg.clear_reactions()
-        await context.send(f"Drawing Ended! The Winner is... <@" + str(winner.id) + ">")
-
+        if len(users) == 0:
+            embed.add_field(name="Winner: ", value="No one entered the drawing!", inline=True)
+            embed.set_footer(text="Drawing Ended!", icon_url=None)
+            await msg.edit(embed=embed)
+            await msg.clear_reactions()
+        else:
+            winner = random.choice(list(users))
+            embed.add_field(name="Winner: ", value=winner.name, inline=True)
+            embed.set_footer(text="Drawing Ended!", icon_url=None)
+            await msg.edit(embed=embed)
+            await msg.clear_reactions()
+            await context.send(f"Drawing Ended! The Winner is... <@" + str(winner.id) + ">")
 
 async def setup(bot) -> None:
     await bot.add_cog(ResumeFunctions(bot))
